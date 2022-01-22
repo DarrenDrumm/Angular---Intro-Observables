@@ -8,20 +8,27 @@ import { LocalStorageService } from './local-storage.service';
 })
 export class AppComponent  {
   name1 : string;
-  ls : LocalStorageService;
-  constructor(theService : LocalStorageService) {
-    this.ls = theService;
+  localStorage: LocalStorageService;
+
+  constructor(localStorage : LocalStorageService) {
+    this.localStorage = localStorage;
   }
   ngOnInit() {
-    this.ls.set('isValid', true);
+    this.localStorage.set('isValid', true);
+    this.localStorage.set('user.name', 'Darren')
   }
 
   ngAfterContentInit() {
-    this.name1 = 'Angular ' + VERSION.major + this.ls.get('isValid');
-    this.ls.set('isValid', false);
-    this.ls.set('isValid', false);
-    this.ls.set('isValid', false);
-    this.ls.set('isValid', false);
+    this.localStorage.data.subscribe(keyvalue => {
+      this.name1 = 'Angular ' + VERSION.major + keyvalue.get('isValid') + '  User Name: ' + keyvalue.get('user.name');
+    });
+    
+    this.timeout(10000).then(() => {
+      this.localStorage.set('isValid', false);
+      this.localStorage.set('user.name', 'Angeline');
+    });
   }
-  
+  timeout(ms) { //pass a time in milliseconds to this function
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
