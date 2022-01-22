@@ -7,7 +7,7 @@ import { LocalStorageService } from './local-storage.service';
   styleUrls: [ './app.component.css' ]
 })
 export class AppComponent  {
-  name1 : string;
+  name : string; // This variable is within the html component and is not required. It just makes it more readable in my opinion.
   localStorage: LocalStorageService;
 
   constructor(localStorage : LocalStorageService) {
@@ -20,7 +20,7 @@ export class AppComponent  {
 
   ngAfterContentInit() {
     this.localStorage.data.subscribe(keyvalue => {
-      this.name1 = 'Angular ' + VERSION.major + keyvalue.get('isValid') + '  User Name: ' + keyvalue.get('user.name');
+      this.name = 'Angular ' + VERSION.major + keyvalue.get('isValid') + '  User Name: ' + keyvalue.get('user.name');
     });
     
     this.timeout(10000).then(() => {
