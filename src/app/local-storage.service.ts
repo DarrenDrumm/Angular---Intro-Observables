@@ -8,18 +8,16 @@ import store, { StoredData } from "store2";
 })
 export class LocalStorageService {
 
-  //private _dataStream$ = new BehaviorSubject<StoredData>([]);
+  private _dataStream$ = new BehaviorSubject<StoredData>([]); //Stream
+  data = this._dataStream$.asObservable(); // Encapsulation: Allows access to the _dataStream$ data value in the subcribed component but does not give access to the .next() method.
 
   set<T>(key: string, value: T): void {
-    console.log('Setting Store:isValid = ' + value);
+    console.log('Setting Store: ' + key + ' = ' + value);
     store.set(key, value);
-    //this._dataStream$.next(store.getAll());
+    this._dataStream$.next(store);
   }
   get<T>(key: string): Observable<T> {
-    //this._dataStream$.next(store.getAll());
-    console.log('Getting Store:isValid = ' + store.get(key));
-    return store.get(key);
-   
-    //return this._dataStream$.pipe(map(data => data[key]));
+    console.log('Getting Store: ' + key + ' = ' + this._dataStream$.pipe(store1 => store1[key]));
+    return this._dataStream$.pipe(store1 => store1[key]);
   }
 }
